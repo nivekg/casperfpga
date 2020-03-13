@@ -55,7 +55,7 @@ class SnapAdc(object):
     ERROR_FRAME = 4
     ERROR_RAMP = 5
 
-    def __init__(self, interface, ADC='HMCAD1511', ref=None, resolution=8):
+    def __init__(self, interface, ADC='HMCAD1511', ref=None, resolution=8, cs=0xFF):
         # interface => casperfpga.CasperFpga(hostname/ip)
 
         self.A_WB_R_LIST = [self.WB_DICT.index(a) for a in self.WB_DICT if a != None]
@@ -82,9 +82,9 @@ class SnapAdc(object):
             raise ValueError("Invalid parameter")
 
         if ADC == 'HMCAD1511':
-            self.adc = HMCAD1511(interface,'adc16_controller')
+            self.adc = HMCAD1511(interface,'adc16_controller', cs=cs)
         else:   # 'HMCAD1520'
-            self.adc = HMCAD1520(interface,'adc16_controller')
+            self.adc = HMCAD1520(interface,'adc16_controller', cs=cs)
 
         # test pattern for clock aligning
         pats = [0b10101010,0b01010101,0b00000000,0b11111111]
